@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <div className="overflow-x-hidden">
       {/* Header Section */}
-      <div className="bg-[#252B42] py-4 hidden lg:block">
+      <div className="bg-[#23856D] py-4 hidden lg:block">
         <div className="container mx-auto flex justify-between items-center text-white text-sm">
           {/* Contact Information */}
           <div className="flex items-center gap-4">
