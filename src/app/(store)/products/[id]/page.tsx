@@ -10,6 +10,14 @@ import Header from "@/components/productList-components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const products = [
   {
@@ -112,6 +120,14 @@ const ProductPage = () => {
     return <div>Product not found</div>;
   }
 
+  const [currentImage, setCurrentImage] = useState<string>(product.imageUrl);
+  const [selectedImage, setSelectedImage] = useState<string>(product.imageUrl); // Track selected image
+
+  const handleImageClick = (imageUrl: string) => {
+    setCurrentImage(imageUrl);
+    setSelectedImage(imageUrl); // Update the selected image
+  };
+
   const handleAddToCart = () => {
     addToCart({
       id: product.id,
@@ -134,7 +150,7 @@ const ProductPage = () => {
         publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
       >
         <Header />
-      </ClerkProvider>{" "}
+      </ClerkProvider>
       <div>
         <p className="text-[#252B42] mt-5 font-bold text-[14px] flex py-8 px-4 sm:px-16 gap-1">
           Home <FiChevronRight className="text-[#BDBDBD] text-[25px]" />{" "}
@@ -145,7 +161,7 @@ const ProductPage = () => {
         {/* Carousel Section */}
         <div className="relative w-full sm:w-[506px] h-[250px] sm:h-[450px] mb-4 sm:mb-0">
           <Image
-            src={product.imageUrl}
+            src={currentImage}
             alt={product.name}
             layout="fill"
             objectFit="cover"
@@ -221,16 +237,24 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-      {/* Move the thumbnails below the carousel */}
+      {/* Thumbnails Section */}
       <div className="flex gap-4 mt-10 md:mt-2 ml-4 sm:ml-14">
         {product.additionalImages.map((image, index) => (
-          <Image
+          <div
             key={index}
-            src={image}
-            alt="product"
-            width={100}
-            height={75}
-          />
+            className={`cursor-pointer ${
+              selectedImage === image ? "border-2 border-[#23A6F0]" : ""
+            }`} // Add border if image is selected
+            onClick={() => handleImageClick(image)}
+          >
+            <Image
+              src={image}
+              alt="product"
+              width={100}
+              height={75}
+              className="rounded-md"
+            />
+          </div>
         ))}
       </div>
       <Footer />
