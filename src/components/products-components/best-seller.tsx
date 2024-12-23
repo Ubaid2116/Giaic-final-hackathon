@@ -78,7 +78,7 @@ const products = [
 
 const BestSeller = () => {
   return (
-    <div className="bg-[#FAFAFA] py-7 mt-10">
+    <div className="bg-[#FAFAFA] py-7 mt-10 wrapper">
       <div>
         <h2 className="px-28 font-bold text-[#252B42] text-[24px]">
           BESTSELLER PRODUCTS

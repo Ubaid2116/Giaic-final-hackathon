@@ -7,7 +7,7 @@ const Plan = () => {
   const [isMonthly, setIsMonthly] = useState(true);
 
   return (
-    <div className="bg-[#FAFAFA] py-12">
+    <div className="bg-[#FAFAFA] py-12 wrapper">
       <div className="text-center mt-14">
         <h3 className="text-[#252B42] font-bold text-[40px]">Pricing</h3>
         <p className="text-[#737373] text-[14px] mt-4">

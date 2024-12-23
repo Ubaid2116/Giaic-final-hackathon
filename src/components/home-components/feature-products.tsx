@@ -80,7 +80,7 @@ const FeatureProducts: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-28 mb-7 overflow-x-hidden">
+    <div className="flex flex-col items-center justify-center text-center mt-28 mb-7 overflow-x-hidden wrapper">
       <div>
         <h3 className="text-[#737373] text-[20px]">Featured Products</h3>
         <h2 className="text-[#252B42] text-[24px] font-bold mt-2">

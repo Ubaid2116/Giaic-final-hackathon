@@ -3,7 +3,7 @@ import React from 'react'
 
 const BigCompannies = () => {
   return (
-    <div className='bg-[#FAFAFA] mt-10 py-11'>
+    <div className='bg-[#FAFAFA] mt-10 py-11 wrapper'>
         <div className="flex flex-col justify-center items-center">
             <h1 className="text-[40px] font-bold text-[#252B42]">Big Companies Are Here</h1>
             <p className="text-[#737373] text-[14px] mt-3">Problems trying to resolve the conflict between </p>

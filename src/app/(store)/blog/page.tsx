@@ -64,7 +64,7 @@ const FeaturesPosts = () => {
       >
         <Header />
       </ClerkProvider>{" "}
-      <div className="text-center mb-20 mt-20">
+      <div className="text-center mb-20 mt-20 wrapper">
         <h3 id="blog" className="text-[#23A6F0] text-[14px] font-bold">
           From Our Blog
         </h3>
@@ -73,7 +73,7 @@ const FeaturesPosts = () => {
           Stay updated with the latest insights and updates from Bandage Store.
         </p>
       </div>
-      <div className="flex flex-wrap justify-center gap-8">
+      <div className="flex flex-wrap justify-center gap-8 wrapper">
         {blogs.map((blog, index) => (
           <div
             key={index}

@@ -51,6 +51,7 @@ const Cart = () => {
       >
         <Header />
       </ClerkProvider>
+      <div className="wrapper">
       <div className="bg-[#FAFAFA] min-h-screen py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-[#252B42] mb-8 text-center">
@@ -138,6 +139,7 @@ const Cart = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
       <Footer />
     </div>

@@ -10,7 +10,7 @@ import {
 const FreeTrail = () => {
   return (
     <div>
-      <div className="py-16 bg-[#FFFFFF] text-center mt-20">
+      <div className="py-16 bg-[#FFFFFF] text-center mt-20 wrapper">
         <h2 className="text-[40px] font-bold text-[#252B42]">
           Start your 14 days free trial
         </h2>

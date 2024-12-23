@@ -4,7 +4,7 @@ import React from "react";
 
 const Work = () => {
   return (
-    <div className="bg-[#2A7CC7] w-full h-auto py-10 px-4">
+    <div className="bg-[#2A7CC7] w-full h-auto py-10 px-4 wrapper">
       <div className="flex flex-col md:flex-row items-center justify-between">
         {/* Text Section */}
         <div className="text-left w-full md:w-1/2">

@@ -36,7 +36,7 @@ const PriceFaqs = () => {
   ];
 
   return (
-    <div className="mt-10 py-10 flex flex-col justify-center items-center">
+    <div className="mt-10 py-10 flex flex-col justify-center items-center wrapper">
       <div className="text-center mb-8">
         <h2 className="text-[#252B42] font-bold text-[40px]">Pricing FAQs</h2>
         <p className="text-[#737373] text-[20px] mt-4">

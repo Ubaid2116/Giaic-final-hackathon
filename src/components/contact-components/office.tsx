@@ -31,7 +31,7 @@ const Office = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center text-center py-10 px-4">
+    <div className="flex flex-col items-center justify-center text-center py-10 px-4 wrapper">
       <div className="mb-10">
         <h3 className="text-[#252B42] font-bold text-[14px] mb-4">
           VISIT OUR OFFICE

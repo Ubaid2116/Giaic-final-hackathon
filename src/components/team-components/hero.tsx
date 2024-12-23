@@ -3,7 +3,7 @@ import { FiChevronRight } from "react-icons/fi";
 
 export default function Hero() {
   return (
-    <div className="text-center py-10">
+    <div className="text-center py-10 wrapper">
       <h2 className="text-[#737373] font-bold text-[16px] mt-5">WHAT WE DO</h2>
       <h1 className="text-[58px] font-bold mt-3 text-[#252B42]">
         Innovation tailored for you

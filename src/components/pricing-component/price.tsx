@@ -3,7 +3,7 @@ import { FiChevronRight } from "react-icons/fi";
 const Price = () => {
 
   return (
-    <div className="flex flex-col items-center w-full  py-20">
+    <div className="flex flex-col items-center w-full py-20 wrapper">
       {/* Header Section */}
       <div className="text-center">
         <h2 className="text-[#737373] font-bold text-[16px] mt-5">PRICING</h2>

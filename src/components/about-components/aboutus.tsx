@@ -3,7 +3,7 @@ import React from "react";
 
 const AboutUs = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between px-4 py-8">
+    <div className="flex flex-col md:flex-row items-center justify-between px-4 py-8 wrapper">
       {/* Text Section */}
       <div className="w-full text-center md:text-left md:w-1/2 md:ml-16">
         <h3 className="text-[#252B42] font-bold text-[16px] mb-6">

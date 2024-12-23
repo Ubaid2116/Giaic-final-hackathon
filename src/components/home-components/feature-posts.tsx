@@ -4,7 +4,7 @@ import React from "react";
 
 const FeauresPosts = () => {
   return (
-    <div className="mt-32">
+    <div className="mt-32 wrapper">
       <div className="text-center mb-20">
         <h3 id="blog" className="text-[#23A6F0] text-[14px] font-bold">Practice Advice</h3>
         <h2 className="text-[#252B42] text-[40px] font-bold">Featured Posts</h2>

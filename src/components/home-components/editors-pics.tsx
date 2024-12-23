@@ -3,7 +3,7 @@ import React from "react";
 
 const EditorsPics = () => {
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-16 mb-7 bg-[#FAFAFA] pt-3">
+    <div className="flex flex-col items-center justify-center text-center mt-16 mb-7 bg-[#FAFAFA] pt-3 wrapper">
       <div>
         <h2 className="text-[#252B42] font-bold text-[24px] mb-2">
           EDITOR&apos;S PICK

@@ -69,7 +69,7 @@ const TeamSection: React.FC = () => {
         instagram: "#",
         twitter: "#",
       },
-      image: "/team-member5.png", // PNG image URL
+      image: "/team-member5.png",
     },
     {
       name: "Sarah Lee",
@@ -114,7 +114,7 @@ const TeamSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white wrapper">
       <h2 className="text-center text-[40px] font-bold mb-20 text-[#252B42]">
         Meet Our Team
       </h2>

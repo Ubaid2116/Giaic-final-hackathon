@@ -115,7 +115,7 @@ const Cards: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-5 mb-7 overflow-x-hidden">
+    <div className="flex flex-col items-center justify-center text-center mt-5 mb-7 overflow-x-hidden wrapper">
       {/* Product Cart Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 mt-6 w-full">
         {products.map((product, index) => (

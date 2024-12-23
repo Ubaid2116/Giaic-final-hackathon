@@ -13,7 +13,7 @@ import {
 
 const Hero = () => {
   return (
-    <div className="bg-[#FAFAFA]">
+    <div className="bg-[#FAFAFA] wrapper">
       <div>
         <p className="text-[#252B42] mt-5 font-bold text-[14px] flex py-8 px-4 sm:px-16 gap-1">
           Home <FiChevronRight className="text-[#BDBDBD] text-[25px]" />{" "}

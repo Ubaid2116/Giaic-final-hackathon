@@ -4,7 +4,7 @@ import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="py-6 mt-10 bg-white">
+    <footer className="py-6 mt-10 bg-white wrapper">
       <div className="flex justify-between items-center py-12 px-10 mx-auto max-w-screen-xl bg-[#FAFAFA]">
         {/* Left: Text */}
         <h2 className="text-[24px] font-bold text-[#252B42]">Bandage</h2>

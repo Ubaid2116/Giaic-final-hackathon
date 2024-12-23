@@ -4,7 +4,7 @@ import Image from 'next/image'
 const Company = () => {
   return (
     <div>
-    <div className="flex justify-center items-center mt-6">
+    <div className="flex justify-center items-center mt-6 wrapper">
           <Image
             src={"/companies.png"}
             alt="companies"

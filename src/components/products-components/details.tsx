@@ -4,7 +4,7 @@ import { IoChevronForward } from "react-icons/io5";
 
 const Details = () => {
   return (
-    <div className="mt-10 py-4">
+    <div className="mt-10 py-4 wrapper">
       {/* Navigation Tabs */}
       <div className="flex justify-center gap-8 items-center px-4 sm:px-14 text-[#737373] text-[14px]">
         <h3 className="font-semibold">Description</h3>

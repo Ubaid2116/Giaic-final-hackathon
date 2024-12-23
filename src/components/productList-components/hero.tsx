@@ -4,7 +4,7 @@ import { FiChevronRight } from "react-icons/fi";
 
 const Hero = () => {
   return (
-    <div className="px-6 mt-4">
+    <div className="px-6 mt-4 wrapper">
       <div className="bg-[#FAFAFA] px-5 py-4 pb-6">
         <div className="flex justify-between items-center">
           <h2 className="text-[#252B42] font-bold text-[24px]">Shop</h2>
