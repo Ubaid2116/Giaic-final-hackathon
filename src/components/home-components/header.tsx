@@ -207,8 +207,16 @@ const Header = () => {
               </Link>
             </li>
             <li>
+                <Link
+                  href="/productList"
+                  className="hover:text-[#23A6F0] transition-all"
+                >
+                  Shop
+                </Link>
+              </li>
+            <li>
               <Link
-                href="/productList"
+                href="/products"
                 className="hover:text-[#23A6F0] transition-all"
               >
                 Product
