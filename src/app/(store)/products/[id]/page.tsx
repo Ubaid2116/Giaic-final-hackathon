@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import React from "react";
 import { FiChevronRight, FiHeart, FiShoppingCart, FiEye } from "react-icons/fi";
@@ -10,7 +11,6 @@ import Header from "@/components/productList-components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
 
 const products = [
   {
@@ -109,16 +109,20 @@ const ProductPage = () => {
 
   const product = products.find((product) => product.id === params?.id);
 
+  const [currentImage, setCurrentImage] = useState<string>(
+    product?.imageUrl || ""
+  );
+  const [selectedImage, setSelectedImage] = useState<string>(
+    product?.imageUrl || ""
+  );
+
   if (!product) {
     return <div>Product not found</div>;
   }
 
-  const [currentImage, setCurrentImage] = useState<string>(product.imageUrl);
-  const [selectedImage, setSelectedImage] = useState<string>(product.imageUrl); // Track selected image
-
   const handleImageClick = (imageUrl: string) => {
     setCurrentImage(imageUrl);
-    setSelectedImage(imageUrl); // Update the selected image
+    setSelectedImage(imageUrl);
   };
 
   const handleAddToCart = () => {
@@ -237,7 +241,7 @@ const ProductPage = () => {
             key={index}
             className={`cursor-pointer ${
               selectedImage === image ? "border-2 border-[#23A6F0]" : ""
-            }`} // Add border if image is selected
+            }`} 
             onClick={() => handleImageClick(image)}
           >
             <Image
