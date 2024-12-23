@@ -19,7 +19,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md py-4 wrapper">
+    <header className="bg-white shadow-md py-4">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <Link href={"/"}>
@@ -54,9 +54,9 @@ const Header = () => {
         </nav>
 
         {/* Icons and Buttons */}
-        <div className="flex items-center gap-4 ml-auto">
+        <div className="flex items-center gap-1 ml-auto">
           {/* Search Icon (Hidden on desktop) */}
-          <button className="md:hidden flex items-center justify-center p-2 text-[#737373] hover:text-[#23A6F0] hover:border-[#23A6F0] transition-all">
+          <button className="md:hidden flex items-center justify-center text-[#737373] hover:text-[#23A6F0] hover:border-[#23A6F0] transition-all">
             <FiSearch size={20} />
           </button>
 
@@ -73,8 +73,10 @@ const Header = () => {
             publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
           >
             <SignedIn>
-              {/* Show UserButton when the user is signed in */}
-              <UserButton />
+              {/* Show UserButton on desktop only */}
+              <div className="hidden md:block mr-5">
+                <UserButton />
+              </div>
             </SignedIn>
 
             <SignedOut>
