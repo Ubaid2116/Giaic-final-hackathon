@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Work = () => {
@@ -17,9 +18,11 @@ const Work = () => {
             The gradual accumulation of information about atomic and <br />
             small-scale behavior during the first quarter of the 20th
           </p>
+          <Link href={"/team"}>
           <button className="border px-6 py-2 md:px-9 md:py-3 text-[#FFFFFF] rounded-md transition-transform hover:scale-110 hover:bg-[#1E6CB3] hover:border-transparent">
             Button
           </button>
+          </Link>
         </div>
 
         {/* Image Section */}

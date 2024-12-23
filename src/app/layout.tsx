@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import { CartProvider } from "@/components/cart-components/CartContext";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -18,10 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <CartProvider>
     <html lang="en" className={montserrat.className}>
       <body>
         {children}
       </body>
     </html>
-  );
+    </CartProvider>
+  );  
 }
