@@ -16,10 +16,14 @@ import {
 } from "react-icons/fi";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
+import { useCart } from "@/components/cart-components/CartContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartItems] = useState(0);
+  const { cartItems } = useCart();
+
+  // Calculate total quantity of items in cart
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="overflow-x-hidden">
@@ -92,14 +96,14 @@ const Header = () => {
           <div className="flex items-center gap-4 md:hidden">
             <FiSearch className="text-2xl text-[#737373] cursor-pointer" />
             <Link href={"/cart"}>
-              <FiShoppingCart className="text-2xl text-[#737373] cursor-pointer relative">
-                {/* Conditional rendering of cart item count */}
-                {cartItems > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartItems}
+              <div className="relative">
+                <FiShoppingCart className="text-2xl text-[#737373] cursor-pointer" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-3 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
                   </span>
                 )}
-              </FiShoppingCart>
+              </div>
             </Link>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -108,7 +112,13 @@ const Header = () => {
               {isMenuOpen ? (
                 <FiX className="text-3xl text-[#252B42]" />
               ) : (
-                <Image src={"/menu-icon.png"} alt="icon" width={23} height={14} className="mr-3" />
+                <Image
+                  src={"/menu-icon.png"}
+                  alt="icon"
+                  width={23}
+                  height={14}
+                  className="mr-3"
+                />
               )}
             </button>
           </div>
@@ -131,13 +141,13 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-              <Link
-                href="/products"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                Products
-              </Link>
-            </li>
+                <Link
+                  href="/products"
+                  className="hover:text-[#23A6F0] transition-all"
+                >
+                  Products
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/about"
@@ -190,14 +200,14 @@ const Header = () => {
 
             <FiSearch className="text-lg cursor-pointer" />
             <Link href={"/cart"}>
-              <FiShoppingCart className="text-lg cursor-pointer relative">
-                {/* Conditional rendering of cart item count */}
-                {cartItems > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartItems}
+              <div className="relative">
+                <FiShoppingCart className="text-lg cursor-pointer" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalItems}
                   </span>
                 )}
-              </FiShoppingCart>
+              </div>
             </Link>
             <FiHeart className="text-lg cursor-pointer" />
           </div>
@@ -282,14 +292,14 @@ const Header = () => {
             {/* Other Icons */}
             <div className="flex gap-6 text-[#23A6F0]">
               <FiSearch className="text-2xl cursor-pointer" />
-              <FiShoppingCart className="text-2xl cursor-pointer relative">
-                {/* Conditional rendering of cart item count */}
-                {cartItems > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {cartItems}
+              <div className="relative">
+                <FiShoppingCart className="text-2xl cursor-pointer" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
                   </span>
                 )}
-              </FiShoppingCart>
+              </div>
               <FiHeart className="text-2xl cursor-pointer" />
             </div>
           </div>

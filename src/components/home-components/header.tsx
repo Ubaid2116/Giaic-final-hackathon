@@ -16,9 +16,14 @@ import {
 } from "react-icons/fi";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
+import { useCart } from "../cart-components/CartContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartItems } = useCart();
+
+  // Calculate total quantity of items in cart
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <div className="overflow-x-hidden">
@@ -89,9 +94,26 @@ const Header = () => {
 
           {/* Action Icons (Mobile and Desktop) */}
           <div className="flex items-center gap-4 md:hidden">
-            <FiSearch size={25} className="text-2xl text-[#737373] cursor-pointer" />
+            <FiSearch
+              size={25}
+              className="text-2xl text-[#737373] cursor-pointer"
+            />
+
             <Link href={"/cart"}>
-              <Image src={"/cart-icon.png"} alt="icon" width={24} height={18} />
+              <div className="relative">
+                <Image
+                  src={"/cart-icon.png"}
+                  alt="icon"
+                  width={24}
+                  height={18}
+                />
+
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </div>
             </Link>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -186,10 +208,16 @@ const Header = () => {
             <SignedIn>
               <UserButton showName />
             </SignedIn>
-
             <FiSearch className="text-lg cursor-pointer" />
             <Link href={"/cart"}>
-              <FiShoppingCart className="text-lg cursor-pointer" />
+              <div className="relative">
+                <FiShoppingCart className="text-lg cursor-pointer" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </div>
             </Link>
             <FiHeart className="text-lg cursor-pointer" />
           </div>
@@ -207,13 +235,13 @@ const Header = () => {
               </Link>
             </li>
             <li>
-                <Link
-                  href="/productList"
-                  className="hover:text-[#23A6F0] transition-all"
-                >
-                  Shop
-                </Link>
-              </li>
+              <Link
+                href="/productList"
+                className="hover:text-[#23A6F0] transition-all"
+              >
+                Shop
+              </Link>
+            </li>
             <li>
               <Link
                 href="/products"
@@ -274,9 +302,15 @@ const Header = () => {
             <div className="flex gap-6 text-[#23A6F0]">
               <FiSearch className="text-2xl cursor-pointer" />
               <Link href={"/cart"}>
-                {" "}
-                <FiShoppingCart className="text-2xl cursor-pointer" />{" "}
-              </Link>
+              <div className="relative">
+                <FiShoppingCart className="text-2xl cursor-pointer" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </div>
+            </Link>
               <FiHeart className="text-2xl cursor-pointer" />
             </div>
           </div>

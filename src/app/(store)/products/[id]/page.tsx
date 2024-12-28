@@ -1,144 +1,108 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import React from "react";
 import { FiChevronRight, FiHeart, FiShoppingCart, FiEye } from "react-icons/fi";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { useCart } from "@/components/cart-components/CartContext";
-import { useParams } from "next/navigation";
+import { CartItem, useCart } from "@/components/cart-components/CartContext";
 import Footer from "@/components/team-components/footer";
 import Header from "@/components/productList-components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { client } from "@/sanity/lib/client";
+import { PortableText } from "@portabletext/react";
+import Loader from "@/components/home-components/loader";
+import { urlFor } from "@/sanity/lib/image";
+import { TypedObject } from "sanity";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { useParams } from "next/navigation";
 
-const products = [
-  {
-    id: "1",
-    name: "Floating Phone",
-    description:
-      "A sleek floating phone cover that keeps your phone safe and dry in the pool.",
-    price: 16.48,
-    discountPrice: 6.48,
-    imageUrl: "/products1.jpeg",
-    additionalImages: ["/products1-2.jpeg", "/products1-3.jpeg"],
-    reviews: 10,
-  },
-  {
-    id: "2",
-    name: "Smart Watch",
-    description:
-      "Stay ahead with this sleek Smartwatch, featuring heart rate monitoring, fitness tracking, and notifications. Perfect for your active lifestyle.",
-    price: 120.0,
-    discountPrice: 90.0,
-    imageUrl: "/products2.jpeg",
-    additionalImages: ["/products2-2.jpeg", "/products2-3.jpeg"],
-    reviews: 5,
-  },
-  {
-    id: "3",
-    name: "Wireless Earbuds",
-    description:
-      "Premium wireless earbuds with noise cancellation and touch controls for a seamless audio experience.",
-    price: 75.99,
-    discountPrice: 50.99,
-    imageUrl: "/products3.jpeg",
-    additionalImages: ["/products3-2.jpeg", "/products3-3.jpeg"],
-    reviews: 15,
-  },
-  {
-    id: "4",
-    name: "Laptop Stand",
-    description:
-      "An ergonomic laptop stand designed to improve posture, reduce strain, and enhance productivity.",
-    price: 25.99,
-    discountPrice: 15.99,
-    imageUrl: "/products4.jpeg",
-    additionalImages: ["/products4-2.jpeg", "/products4-3.jpeg"],
-    reviews: 8,
-  },
-  {
-    id: "5",
-    name: "Gaming Mouse",
-    description:
-      "Precision gaming mouse with customizable buttons and RGB lighting.",
-    price: 45.99,
-    discountPrice: 35.99,
-    additionalImages: ["/products5-2.jpeg", "/products5-3.jpeg"],
-    imageUrl: "/products5.jpeg",
-    reviews: 4,
-  },
-  {
-    id: "6",
-    name: "Bluetooth Speaker",
-    description:
-      "Portable Bluetooth speaker with crystal-clear sound and deep bass.",
-    price: 60.0,
-    discountPrice: 45.0,
-    additionalImages: ["/products6-2.jpeg", "/products6-3.jpeg"],
-    imageUrl: "/products6.jpeg",
-    reviews: 6,
-  },
-  {
-    id: "7",
-    name: "Portable Power Bank",
-    description:
-      "High-capacity power bank to keep your devices charged on the go.",
-    price: 35.99,
-    discountPrice: 25.99,
-    additionalImages: ["/products7-2.jpeg", "/products7-3.jpeg"],
-    imageUrl: "/products7.jpeg",
-    reviews: 3,
-  },
-  {
-    id: "8",
-    name: "Ergonomic Desk Chair",
-    description:
-      "Comfortable and adjustable desk chair designed for long working hours.",
-    price: 150.0,
-    discountPrice: 120.0,
-    additionalImages: ["/products8-2.jpeg", "/products8-3.jpeg"],
-    imageUrl: "/products8.jpeg",
-    reviews: 4,
-  },
-];
+interface Product {
+  _id: string;
+  name: string;
+  image: SanityImageSource;
+  category: string;
+  price: number;
+  originalPrice?: number;
+  description: string;
+  discountPrice?: number;
+  reviews: number;
+  additionalImages: SanityImageSource[];
+  slug: {
+    current: string;
+  };
+}
 
-const ProductPage = () => {
-  const params = useParams();
+export default function ProductDetail() {
+  const { id } = useParams();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { addToCart } = useCart();
+  const [currentImage, setCurrentImage] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
-  const product = products.find((product) => product.id === params?.id);
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const query = `*[_type == "product" && slug.current == $id][0]`;
+        const product = await client.fetch(query, { id });
 
-  const [currentImage, setCurrentImage] = useState<string>(
-    product?.imageUrl || ""
-  );
-  const [selectedImage, setSelectedImage] = useState<string>(
-    product?.imageUrl || ""
-  );
+        if (!product) {
+          throw new Error("Product not found");
+        }
 
-  if (!product) {
-    return <div>Product not found</div>;
-  }
+        setProduct(product);
+        if (product?.image) {
+          setCurrentImage(urlFor(product.image).url());
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setError(
+          error instanceof Error ? error.message : "Failed to load product"
+        );
+        toast.error("Failed to load product");
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  const handleImageClick = (imageUrl: string) => {
+    fetchProduct();
+  }, [id]);
+
+  if (loading) return <Loader />;
+  if (error)
+    return <div className="text-center text-red-500 py-10">{error}</div>;
+  if (!product)
+    return <div className="text-center py-10">Product not found</div>;
+
+  const handleImageClick = (image: SanityImageSource) => {
+    const imageUrl = urlFor(image).url();
     setCurrentImage(imageUrl);
     setSelectedImage(imageUrl);
   };
 
   const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      quantity: 1,
-      imageUrl: product.imageUrl,
-    });
+    if (product) {
+      const item: CartItem = {
+        id: product._id,
+        name: product.name,
+        description: product.description,
+        price: product.discountPrice || product.price,
+        quantity: 1,
+        imageUrl: urlFor(product.image).url(),
+      };
 
-    toast.success(`${product.name} added to cart!`, {
-      position: "bottom-right",
-      autoClose: 3000,
-    });
+      addToCart(item);
+
+      toast.success(`${product.name} added to cart!`, {
+        position: "bottom-right",
+        autoClose: 3000,
+      });
+    } else {
+      console.log("Product data is missing!");
+    }
   };
 
   return (
@@ -156,14 +120,44 @@ const ProductPage = () => {
       </div>
       <div className="px-4 sm:px-14 flex flex-col sm:flex-row">
         {/* Carousel Section */}
-        <div className="relative w-full sm:w-[506px] h-[250px] sm:h-[450px] mb-4 sm:mb-0">
-          <Image
-            src={currentImage}
-            alt={product.name}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-md"
-          />
+        <div className="relative w-full sm:w-[506px] mb-4 sm:mb-0">
+          {/* Main Image */}
+          <div className="w-full h-[250px] sm:h-[450px] mb-4 relative">
+            {currentImage ? (
+              <Image
+                src={currentImage}
+                alt={product.name || "Product Image"}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-md"
+              />
+            ) : (
+              <div className="bg-gray-300 w-full h-full rounded-md"></div>
+            )}
+          </div>
+
+          {/* Additional Thumbnails */}
+          <div className="flex gap-4 justify-start mt-2">
+            {product.additionalImages.slice(0, 2).map((image, index) => (
+              <div
+                key={index}
+                className="cursor-pointer border border-gray-200 rounded-md overflow-hidden"
+                onClick={() => handleImageClick(image)}
+              >
+                <Image
+                  src={urlFor(image).width(100).height(75).url()}
+                  alt={`Additional Image ${index + 1}`}
+                  width={100}
+                  height={75}
+                  className={`rounded-md ${
+                    selectedImage === urlFor(image).url()
+                      ? "border-2 border-blue-500"
+                      : ""
+                  }`}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Product Details Section */}
@@ -171,6 +165,7 @@ const ProductPage = () => {
           <h2 className="text-[#252B42] text-[20px] mt-12 md:mt-0">
             {product.name}
           </h2>
+
           {/* Star Reviews Section */}
           <div className="flex justify-center sm:justify-start items-center mt-2">
             <div className="flex text-[#F3CD03] gap-2">
@@ -195,7 +190,7 @@ const ProductPage = () => {
                   ${product.price}
                 </span>
               )}
-              ${product.discountPrice}
+              ${product.discountPrice || product.price}
             </p>
             <p className="text-[#737373] font-bold text-[14px] mt-1">
               Availability :{" "}
@@ -204,20 +199,14 @@ const ProductPage = () => {
               </span>
             </p>
           </div>
-          <div className="mt-8">
-            <p className="text-[#858585] text-[14px]">{product.description}</p>
+          <div className="mt-8 text-[#737373] text-[16px]">
+            <PortableText
+              value={product.description as unknown as TypedObject[]}
+            />
             <div className="border-b-2 border-[#BDBDBD] mt-8"></div>
           </div>
 
-          {/* Colored Rounded Divs */}
-          <div className="flex justify-center sm:justify-start mt-8 gap-4">
-            <div className="w-8 h-8 bg-[#23A6F0] rounded-full"></div>
-            <div className="w-8 h-8 bg-[#2DC071] rounded-full"></div>
-            <div className="w-8 h-8 bg-[#E77C40] rounded-full"></div>
-            <div className="w-8 h-8 bg-[#252B42] rounded-full"></div>
-          </div>
-
-          {/* Action Buttons with Icons */}
+          {/* Action Buttons */}
           <div className="flex justify-center sm:justify-start gap-4 mt-14">
             <button className="px-6 py-1 md:px-6 md:py-4 bg-[#23A6F0] hover:bg-blue-400 text-[#FFFFFF] rounded-md text-[14px] font-bold">
               Select Options
@@ -225,8 +214,11 @@ const ProductPage = () => {
             <button className="w-12 h-12 bg-[#FFFFFF] hover:bg-[#F1F1F1] text-[#252B42] border border-[#BDBDBD] rounded-full flex items-center justify-center text-[20px] font-bold">
               <FiHeart />
             </button>
-            <button className="w-12 h-12 bg-[#FFFFFF] hover:bg-[#F1F1F1] text-[#252B42] border border-[#BDBDBD] rounded-full flex items-center justify-center text-[20px] font-bold">
-              <FiShoppingCart onClick={handleAddToCart} />
+            <button
+              onClick={handleAddToCart}
+              className="w-12 h-12 bg-[#FFFFFF] hover:bg-[#F1F1F1] text-[#252B42] border border-[#BDBDBD] rounded-full flex items-center justify-center text-[20px] font-bold"
+            >
+              <FiShoppingCart />
             </button>
             <button className="w-12 h-12 bg-[#FFFFFF] hover:bg-[#F1F1F1] text-[#252B42] border border-[#BDBDBD] rounded-full flex items-center justify-center text-[20px] font-bold">
               <FiEye />
@@ -234,30 +226,8 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-      {/* Thumbnails Section */}
-      <div className="flex gap-4 mt-10 md:mt-2 ml-4 sm:ml-14">
-        {product.additionalImages.map((image, index) => (
-          <div
-            key={index}
-            className={`cursor-pointer ${
-              selectedImage === image ? "border-2 border-[#23A6F0]" : ""
-            }`} 
-            onClick={() => handleImageClick(image)}
-          >
-            <Image
-              src={image}
-              alt="product"
-              width={100}
-              height={75}
-              className="rounded-md"
-            />
-          </div>
-        ))}
-      </div>
       <Footer />
       <ToastContainer />
     </div>
   );
-};
-
-export default ProductPage;
+}

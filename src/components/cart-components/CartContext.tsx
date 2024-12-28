@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-interface CartItem {
+export interface CartItem {
   id: string;
   name: string;
   description: string;
@@ -53,7 +53,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setCartItems((prevItems) =>
       prevItems
         .map((cartItem) =>
-          cartItem.id === id && cartItem.quantity > 1
+          cartItem.id === id
             ? { ...cartItem, quantity: cartItem.quantity - 1 }
             : cartItem
         )
