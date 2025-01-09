@@ -22,7 +22,7 @@ const Details = () => {
         {/* Left Section - Image */}
         <div className="flex-shrink-0 w-full sm:w-1/3 mb-6 sm:mb-0">
           <Image
-            src="/detail1.png"
+            src="/detail1.webp"
             alt="Product"
             width={316}
             height={372}
