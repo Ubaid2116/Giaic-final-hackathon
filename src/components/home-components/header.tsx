@@ -21,10 +21,12 @@ import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems } = useCart();
+  const { cartItems, wishlist } = useCart(); // Add wishlist from useCart
 
   // Calculate total quantity of items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const totalWishlistItems = wishlist.length; // Assuming each item in wishlist has a quantity of 1
 
   // Animation variants for the mobile menu
   const mobileMenuVariants = {
@@ -227,7 +229,6 @@ const Header = () => {
                 </motion.button>
               </SignInButton>
             </SignedOut>
-
             <SignedIn>
               <UserButton showName />
             </SignedIn>
@@ -251,7 +252,16 @@ const Header = () => {
                 )}
               </motion.div>
             </Link>
-            <FiHeart className="text-lg cursor-pointer" />
+            <Link href={"/wishlist"}>
+              <div className="relative">
+                <FiHeart className="text-lg cursor-pointer" size={20} />
+                {totalWishlistItems > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalWishlistItems}
+                  </span>
+                )}
+              </div>
+            </Link>{" "}
           </div>
         </div>
 
@@ -267,7 +277,10 @@ const Header = () => {
             >
               <ul className="flex flex-col gap-6 p-4 text-[20px] text-[#737373] text-center">
                 <li>
-                  <Link href="/" className="hover:text-[#23A6F0] transition-all">
+                  <Link
+                    href="/"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
                     Home
                   </Link>
                 </li>
@@ -365,7 +378,16 @@ const Header = () => {
                       )}
                     </motion.div>
                   </Link>
-                  <FiHeart className="text-2xl cursor-pointer" />
+                  <Link href={"/wishlist"}>
+                    <div className="relative">
+                      <FiHeart className="text-lg cursor-pointer" size={25} />
+                      {totalWishlistItems > 0 && (
+                        <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                          {totalWishlistItems}
+                        </span>
+                      )}
+                    </div>
+                  </Link>{" "}
                 </div>
               </div>
             </motion.div>

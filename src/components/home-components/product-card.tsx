@@ -16,7 +16,7 @@ export interface Product {
   stock: number;
   rating: number;
   description: string;
-  
+  inStock: boolean;
 }
 
 interface ProductCardProps {

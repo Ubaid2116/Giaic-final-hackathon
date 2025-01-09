@@ -28,6 +28,7 @@ export default function BestSeller() {
         image,
         discountPrice,
         slug,
+        inStock
       }`;
       const data: Product[] = await client.fetch(query);
       setProducts(data);

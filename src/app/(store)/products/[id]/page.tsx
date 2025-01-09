@@ -32,6 +32,7 @@ interface Product {
   slug: {
     current: string;
   };
+  inStock: boolean;
 }
 
 export default function ProductDetail() {
@@ -39,7 +40,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { addToCart } = useCart();
+  const { addToCart, addToWishlist } = useCart();
   const [currentImage, setCurrentImage] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<string>("");
 
@@ -52,6 +53,9 @@ export default function ProductDetail() {
         if (!product) {
           throw new Error("Product not found");
         }
+
+        console.log("Fetched Product:", product); // Debug log
+        console.log("In Stock Status:", product.inStock); // Debug log
 
         setProduct(product);
         if (product?.image) {
@@ -84,25 +88,75 @@ export default function ProductDetail() {
   };
 
   const handleAddToCart = () => {
-    if (product) {
-      const item: CartItem = {
-        id: product._id,
-        name: product.name,
-        description: product.description,
-        price: product.discountPrice || product.price,
-        quantity: 1,
-        imageUrl: urlFor(product.image).url(),
-      };
-
-      addToCart(item);
-
-      toast.success(`${product.name} added to cart!`, {
-        position: "bottom-right",
-        autoClose: 3000,
-      });
-    } else {
+    if (!product) {
       console.log("Product data is missing!");
+      return;
     }
+
+    // Check if the product is out of stock
+    if (!product.inStock) {
+      toast.error(
+        "This product is out of stock and cannot be added to the cart.",
+        {
+          position: "bottom-right",
+          autoClose: 3000,
+        }
+      );
+      return;
+    }
+
+    const item: CartItem = {
+      id: product._id,
+      name: product.name,
+      description: product.description,
+      price: product.discountPrice || product.price,
+      quantity: 1,
+      imageUrl: urlFor(product.image).url(),
+      inStock: product.inStock,
+    };
+
+    addToCart(item);
+
+    toast.success(`${product.name} added to cart!`, {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
+  };
+
+  const handleAddToWishlist = () => {
+    if (!product) {
+      console.log("Product data is missing!");
+      return;
+    }
+
+    // Check if the product is in stock
+    if (product.inStock) {
+      toast.error(
+        "This product is in stock and cannot be added to the wishlist.",
+        {
+          position: "bottom-right",
+          autoClose: 3000,
+        }
+      );
+      return;
+    }
+
+    const item: CartItem = {
+      id: product._id,
+      name: product.name,
+      description: product.description,
+      price: product.discountPrice || product.price,
+      quantity: 1,
+      imageUrl: urlFor(product.image).url(),
+      inStock: product.inStock,
+    };
+
+    console.log("Adding to Wishlist:", item);
+    addToWishlist(item);
+    toast.success(`${product.name} added to wishlist!`, {
+      position: "bottom-right",
+      autoClose: 3000,
+    });
   };
 
   return (
@@ -194,8 +248,12 @@ export default function ProductDetail() {
             </p>
             <p className="text-[#737373] font-bold text-[14px] mt-1">
               Availability :{" "}
-              <span className="text-[#23A6F0] font-bold text-[14px]">
-                In Stock
+              <span
+                className={`font-bold text-[14px] ${
+                  product.inStock ? "text-[#23A6F0]" : "text-[#E74040]"
+                }`}
+              >
+                {product.inStock ? "In Stock" : "Out of Stock"}
               </span>
             </p>
           </div>
@@ -211,7 +269,10 @@ export default function ProductDetail() {
             <button className="px-6 py-1 md:px-6 md:py-4 bg-[#23A6F0] hover:bg-blue-400 text-[#FFFFFF] rounded-md text-[14px] font-bold">
               Select Options
             </button>
-            <button className="w-12 h-12 bg-[#FFFFFF] hover:bg-[#F1F1F1] text-[#252B42] border border-[#BDBDBD] rounded-full flex items-center justify-center text-[20px] font-bold">
+            <button
+              className="w-12 h-12 bg-[#FFFFFF] hover:bg-[#F1F1F1] text-[#252B42] border border-[#BDBDBD] rounded-full flex items-center justify-center text-[20px] font-bold"
+              onClick={handleAddToWishlist}
+            >
               <FiHeart />
             </button>
             <button

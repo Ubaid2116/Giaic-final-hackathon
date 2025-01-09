@@ -20,10 +20,13 @@ import { useCart } from "@/components/cart-components/CartContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems } = useCart();
+  const { cartItems, wishlist } = useCart(); // Add wishlist from useCart
 
   // Calculate total quantity of items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Calculate total quantity of items in wishlist
+  const totalWishlistItems = wishlist.length; // Assuming each item in wishlist has a quantity of 1
 
   return (
     <div className="overflow-x-hidden">
@@ -101,6 +104,16 @@ const Header = () => {
                 {totalItems > 0 && (
                   <span className="absolute -top-3 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
                     {totalItems}
+                  </span>
+                )}
+              </div>
+            </Link>
+            <Link href={"/wishlist"}>
+              <div className="relative">
+                <FiHeart className="text-2xl text-[#737373] cursor-pointer" />
+                {totalWishlistItems > 0 && (
+                  <span className="absolute -top-3 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalWishlistItems}
                   </span>
                 )}
               </div>
@@ -209,7 +222,16 @@ const Header = () => {
                 )}
               </div>
             </Link>
-            <FiHeart className="text-lg cursor-pointer" />
+            <Link href={"/wishlist"}>
+              <div className="relative">
+                <FiHeart className="text-lg cursor-pointer" />
+                {totalWishlistItems > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                    {totalWishlistItems}
+                  </span>
+                )}
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -300,7 +322,14 @@ const Header = () => {
                   </span>
                 )}
               </div>
-              <FiHeart className="text-2xl cursor-pointer" />
+              <div className="relative">
+                <FiHeart className="text-2xl cursor-pointer" />
+                {totalWishlistItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalWishlistItems}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>

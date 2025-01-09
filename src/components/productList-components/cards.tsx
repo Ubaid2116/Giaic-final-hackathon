@@ -23,7 +23,8 @@ const Cards: React.FC = () => {
         department,
         stock,
         rating,
-        reviews
+        reviews,
+        inStock
       }`;
 
       const data: Product[] = await client.fetch(query);

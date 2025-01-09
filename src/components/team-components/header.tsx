@@ -10,9 +10,14 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Image from "next/image";
+import { useCart } from "@/components/cart-components/CartContext";
+
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cartItems } = useCart();
+
+    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prevState) => !prevState);
@@ -57,14 +62,20 @@ const Header = () => {
         <div className="flex items-center gap-1 ml-auto">
           {/* Search Icon (Hidden on desktop) */}
           <button className="md:hidden flex items-center justify-center text-[#737373] hover:text-[#23A6F0] hover:border-[#23A6F0] transition-all">
-            <FiSearch size={20} />
+            <FiSearch size={25} />
           </button>
 
           {/* Add to Cart Icon (Hidden on desktop) */}
           <button className="md:hidden flex items-center justify-center p-2 text-[#737373] hover:text-[#23A6F0] hover:border-[#23A6F0] transition-all">
-            <Link href={"/cart"}>
-              {" "}
-              <FiShoppingCart size={20} />{" "}
+          <Link href={"/cart"}>
+              <div className="relative">
+                <FiShoppingCart className="text-2xl text-[#737373] cursor-pointer" />
+                {totalItems > 0 && (
+                  <span className="absolute -top-3 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </div>
             </Link>
           </button>
 
@@ -106,8 +117,8 @@ const Header = () => {
                 <Image
                   src={"/menu-icon.png"}
                   alt="icon"
-                  width={23}
-                  height={14}
+                  width={25}
+                  height={17}
                   className="mr-3"
                 />
               )}

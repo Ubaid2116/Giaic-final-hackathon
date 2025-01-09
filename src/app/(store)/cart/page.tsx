@@ -7,6 +7,7 @@ import Header from "@/components/productList-components/header";
 import Footer from "@/components/team-components/footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { loadStripe } from "@stripe/stripe-js";
+import Image from "next/image";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -85,6 +86,17 @@ const Cart = () => {
                       className="border-b border-gray-200 hover:bg-gray-100"
                     >
                       <td className="py-4 px-4 flex items-center space-x-3">
+                        {/* Product Image */}
+                        <div className="w-16 h-16 relative">
+                          <Image
+                            src={item.imageUrl}
+                            alt={item.name}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-md"
+                          />
+                        </div>
+                        {/* Product Name */}
                         <span className="text-sm font-medium text-[#252B42] pt-[10px]">
                           {item.name}
                         </span>

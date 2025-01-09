@@ -67,7 +67,6 @@ export const productTypes = defineType({
           return true;
         }),
     }),
-
     defineField({
       name: "categories",
       title: "Categories",
@@ -75,10 +74,12 @@ export const productTypes = defineType({
       of: [{ type: "reference", to: { type: "category" } }],
     }),
     defineField({
-      name: "stock",
-      title: "Stock",
-      type: "number",
-      validation: (Rule) => Rule.required().min(0),
+      name: "inStock",
+      title: "In Stock",
+      type: "boolean",
+      description: "Indicates whether the product is currently in stock",
+      initialValue: true, // Default value
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "rating",
@@ -100,11 +101,12 @@ export const productTypes = defineType({
       title: "name",
       media: "image",
       subtitle: "price",
+      inStock: "inStock",
     },
-    prepare({ title, subtitle, media }) {
+    prepare({ title, subtitle, media, inStock }) {
       return {
         title,
-        subtitle: `$${subtitle}`,
+        subtitle: `$${subtitle} | ${inStock ? "In Stock" : "Out of Stock"}`,
         media,
       };
     },
