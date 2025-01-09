@@ -1,10 +1,31 @@
+"use client"
 import Image from "next/image";
 import React from "react";
 import { FiChevronRight } from "react-icons/fi";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const Hero = () => {
+  // Animation variants for product images
+  const productImageVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  // Animation variants for hover text overlay
+  const hoverTextVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+  };
+
+  // Animation variants for buttons and icons
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  };
+
   return (
     <div className="px-6 mt-4 wrapper">
+      {/* Top Section */}
       <div className="bg-[#FAFAFA] px-5 py-4 pb-6">
         <div className="flex justify-between items-center">
           <h2 className="text-[#252B42] font-bold text-[24px]">Shop</h2>
@@ -14,6 +35,7 @@ const Hero = () => {
           </p>
         </div>
 
+        {/* Product Images Grid */}
         <div className="mt-10 flex justify-center items-center gap-2 flex-wrap">
           {[
             "product1.png",
@@ -22,9 +44,13 @@ const Hero = () => {
             "product4.png",
             "product5.png",
           ].map((product, index) => (
-            <div
+            <motion.div
               key={index}
               className="relative group w-full sm:w-[calc(20%-1rem)] md:w-[calc(20%-1rem)]"
+              variants={productImageVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
               <div className="relative group">
                 <Image
@@ -35,44 +61,83 @@ const Hero = () => {
                   className="object-cover"
                 />
                 {/* Text on hover */}
-                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center text-[#FFFFFF] transition-opacity duration-300">
+                <motion.div
+                  className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex flex-col justify-center items-center text-[#FFFFFF] transition-opacity duration-300"
+                  variants={hoverTextVariants}
+                  initial="hidden"
+                  whileHover="visible"
+                >
                   <h3 className="text-[16px] font-bold">Trending Apparel</h3>
                   <p className="text-[14px]">Explore 5 Stylish Products</p>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
+
       {/* Section below images */}
       <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center mt-8 px-4 sm:px-28">
         {/* Left side - Showing all 12 results */}
-        <div className="text-[#737373] text-[14px] font-bold text-center sm:text-left w-full sm:w-auto">
+        <motion.div
+          className="text-[#737373] text-[14px] font-bold text-center sm:text-left w-full sm:w-auto"
+          variants={productImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <p>Showing all 12 results</p>
-        </div>
+        </motion.div>
 
         {/* Center section - Box Icon and Hamburger */}
-        <div className="flex justify-center items-center gap-3 text-center sm:text-center w-full sm:w-auto mt-4 sm:mt-0">
+        <motion.div
+          className="flex justify-center items-center gap-3 text-center sm:text-center w-full sm:w-auto mt-4 sm:mt-0"
+          variants={productImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <p className="text-[#737373] text-[14px] font-bold">Views:</p>
-          <div className="flex items-center justify-center w-9 h-9 rounded-sm border border-[#DDDDDD] text-[#252B42]">
+          <motion.div
+            className="flex items-center justify-center w-9 h-9 rounded-sm border border-[#DDDDDD] text-[#252B42]"
+            whileHover="hover"
+            whileTap="tap"
+            variants={buttonVariants}
+          >
             <Image src={"/grid-icon.png"} alt="icon" width={14} height={14} />
-          </div>
-          <div className="flex items-center justify-center w-9 h-9 rounded-sm border border-[#DDDDDD] text-[#737373]">
+          </motion.div>
+          <motion.div
+            className="flex items-center justify-center w-9 h-9 rounded-sm border border-[#DDDDDD] text-[#737373]"
+            whileHover="hover"
+            whileTap="tap"
+            variants={buttonVariants}
+          >
             <Image src={"/list-icon.png"} alt="icon" height={16} width={16} />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right section - Popularity Dropdown and Filter Button */}
-        <div className="flex items-center gap-4 text-center sm:text-left w-full sm:w-auto mt-4 sm:mt-0">
+        <motion.div
+          className="flex items-center gap-4 text-center sm:text-left w-full sm:w-auto mt-4 sm:mt-0"
+          variants={productImageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <select className="bg-[#F9F9F9] border border-[#DDDDDD] py-3 px-2 text-[#737373] text-[14px] rounded-md w-full sm:w-auto">
             <option value="popularity">Popularity</option>
             <option value="price_low_to_high">Price: Low to High</option>
             <option value="price_high_to_low">Price: High to Low</option>
           </select>
-          <button className="bg-[#23A6F0] text-white py-3 px-5 rounded-md hover:bg-[#1c8a9b] transition-all duration-300 font-bold text-[14px] w-full sm:w-auto">
+          <motion.button
+            className="bg-[#23A6F0] text-white py-3 px-5 rounded-md hover:bg-[#1c8a9b] transition-all duration-300 font-bold text-[14px] w-full sm:w-auto"
+            whileHover="hover"
+            whileTap="tap"
+            variants={buttonVariants}
+          >
             Filter
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </div>
   );

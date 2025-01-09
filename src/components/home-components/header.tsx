@@ -17,6 +17,7 @@ import {
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { useCart } from "../cart-components/CartContext";
+import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,6 +25,12 @@ const Header = () => {
 
   // Calculate total quantity of items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Animation variants for the mobile menu
+  const mobileMenuVariants = {
+    open: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    closed: { opacity: 0, y: "-100%", transition: { duration: 0.3 } },
+  };
 
   return (
     <div className="overflow-x-hidden">
@@ -87,9 +94,13 @@ const Header = () => {
         <div className="container mx-auto flex items-center justify-between py-4">
           {/* Logo */}
           <Link href={"/"}>
-            <div className="text-2xl font-bold text-[#252B42] hover:text-slate-600 ml-2">
+            <motion.div
+              className="text-2xl font-bold text-[#252B42] hover:text-slate-600 ml-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Bandage
-            </div>
+            </motion.div>
           </Link>
 
           {/* Action Icons (Mobile and Desktop) */}
@@ -100,7 +111,11 @@ const Header = () => {
             />
 
             <Link href={"/cart"}>
-              <div className="relative">
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <Image
                   src={"/cart-icon.png"}
                   alt="icon"
@@ -109,11 +124,16 @@ const Header = () => {
                 />
 
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                  <motion.span
+                    className="absolute -top-2 -right-3 bg-[#23A6F0] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  >
                     {totalItems}
-                  </span>
+                  </motion.span>
                 )}
-              </div>
+              </motion.div>
             </Link>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -196,12 +216,15 @@ const Header = () => {
           {/* Action Icons for Desktop */}
           <div className="hidden md:flex items-center gap-6 text-[#23A6F0]">
             {/* Authentication Section */}
-
             <SignedOut>
               <SignInButton mode="modal">
-                <button className="text-sm font-medium flex items-center gap-2">
+                <motion.button
+                  className="text-sm font-medium flex items-center gap-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Login/Register
-                </button>
+                </motion.button>
               </SignInButton>
             </SignedOut>
 
@@ -210,111 +233,144 @@ const Header = () => {
             </SignedIn>
             <FiSearch className="text-lg cursor-pointer" />
             <Link href={"/cart"}>
-              <div className="relative">
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
                 <FiShoppingCart className="text-lg cursor-pointer" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
+                  <motion.span
+                    className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                  >
                     {totalItems}
-                  </span>
+                  </motion.span>
                 )}
-              </div>
+              </motion.div>
             </Link>
             <FiHeart className="text-lg cursor-pointer" />
           </div>
         </div>
+
         {/* Mobile Menu */}
-        <div
-          className={`${
-            isMenuOpen ? "block" : "hidden"
-          } md:hidden bg-white shadow-md transition-all duration-300 ease-in-out`}
-        >
-          <ul className="flex flex-col gap-6 p-4 text-[20px] text-[#737373] text-center">
-            <li>
-              <Link href="/" className="hover:text-[#23A6F0] transition-all">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/productList"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                Shop
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/products"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                Product
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/about"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/blog"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                Blog
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/contact"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/team"
-                className="hover:text-[#23A6F0] transition-all"
-              >
-                Team
-              </Link>
-            </li>
-          </ul>
-          {/* Action Icons */}
-          <div className="flex flex-col gap-4 items-center py-4">
-            {/* Authentication */}
-            <SignedOut>
-              <SignInButton mode="modal">
-                <button className="text-sm font-medium flex items-center gap-2 text-[#23A6F0]">
-                  Login/Register
-                </button>
-              </SignInButton>
-            </SignedOut>
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              className="md:hidden bg-white shadow-md"
+              variants={mobileMenuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+            >
+              <ul className="flex flex-col gap-6 p-4 text-[20px] text-[#737373] text-center">
+                <li>
+                  <Link href="/" className="hover:text-[#23A6F0] transition-all">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/productList"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
+                    Shop
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/products"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
+                    Product
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/about"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
+                    About
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/blog"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contact"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
+                    Contact
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/team"
+                    className="hover:text-[#23A6F0] transition-all"
+                  >
+                    Team
+                  </Link>
+                </li>
+              </ul>
+              {/* Action Icons */}
+              <div className="flex flex-col gap-4 items-center py-4">
+                {/* Authentication */}
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <motion.button
+                      className="text-sm font-medium flex items-center gap-2 text-[#23A6F0]"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Login/Register
+                    </motion.button>
+                  </SignInButton>
+                </SignedOut>
 
-            <SignedIn>
-              <UserButton showName />
-            </SignedIn>
+                <SignedIn>
+                  <UserButton showName />
+                </SignedIn>
 
-            {/* Other Icons */}
-            <div className="flex gap-6 text-[#23A6F0]">
-              <FiSearch className="text-2xl cursor-pointer" />
-              <Link href={"/cart"}>
-              <div className="relative">
-                <FiShoppingCart className="text-2xl cursor-pointer" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
+                {/* Other Icons */}
+                <div className="flex gap-6 text-[#23A6F0]">
+                  <FiSearch className="text-2xl cursor-pointer" />
+                  <Link href={"/cart"}>
+                    <motion.div
+                      className="relative"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <FiShoppingCart className="text-2xl cursor-pointer" />
+                      {totalItems > 0 && (
+                        <motion.span
+                          className="absolute -top-2 -right-3 bg-[#737373] text-white text-xs font-semibold rounded-full w-4 h-4 flex items-center justify-center"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 260,
+                            damping: 20,
+                          }}
+                        >
+                          {totalItems}
+                        </motion.span>
+                      )}
+                    </motion.div>
+                  </Link>
+                  <FiHeart className="text-2xl cursor-pointer" />
+                </div>
               </div>
-            </Link>
-              <FiHeart className="text-2xl cursor-pointer" />
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

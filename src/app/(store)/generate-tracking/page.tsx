@@ -4,6 +4,9 @@ import axios from "axios";
 import Link from "next/link";
 import { Address, Rate, trackingObjType } from "../../../../types";
 import { cartProductsWhichCanBeShipped } from "../../../../data";
+import { ClerkProvider } from "@clerk/nextjs";
+import Header from "@/components/productList-components/header";
+import Footer from "@/components/team-components/footer";
 
 // Helper function to safely access address fields
 const getAddressField = (address: Address, field: string): string => {
@@ -100,141 +103,152 @@ const ShippingRatesPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-indigo-200 to-purple-200 py-12 px-6">
-      <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-indigo-700 text-center mb-8">
-          Shipping Rates Calculator
-        </h1>
+    <div>
+      <ClerkProvider
+        publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      >
+        <Header />
+      </ClerkProvider>{" "}
+      <div className="min-h-screen bg-[#FAFAFA] py-12 px-6">
+        <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-lg p-8">
+          <h1 className="text-4xl font-bold text-[#252B42] text-center mb-8">
+            Shipping Rates Calculator
+          </h1>
 
-        {/* Shipping Address Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {[
-              "name",
-              "phone",
-              "addressLine1",
-              "cityLocality",
-              "stateProvince",
-              "postalCode",
-              "countryCode",
-            ].map((field, index) => (
-              <input
-                key={index}
-                type="text"
-                placeholder={
-                  field === "countryCode"
-                    ? "Country Code (e.g., US)"
-                    : field
-                        .replace(/([A-Z])/g, " $1")
-                        .replace(/^./, (str) => str.toUpperCase())
-                }
-                value={getAddressField(shipeToAddress, field)}
-                onChange={(e) =>
-                  setshipeToAddress({
-                    ...shipeToAddress,
-                    [field]: e.target.value,
-                  })
-                }
-                className="w-full p-3 border rounded-md shadow-sm focus:ring focus:ring-indigo-400"
-                required
-              />
-            ))}
-          </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-lg hover:bg-indigo-700 disabled:bg-gray-400"
-          >
-            {loading ? "Calculating Rates..." : "Get Shipping Rates"}
-          </button>
-        </form>
-
-        {/* Display Available Shipping Rates */}
-        {rates.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Available Shipping Rates
-            </h2>
-            <div className="space-y-4">
-              {rates.map((rate) => (
-                <div
-                  key={rate.rateId}
-                  className={`p-4 border rounded-lg cursor-pointer transition-colors shadow-sm hover:shadow-md ${
-                    rateId === rate.rateId
-                      ? "border-indigo-600 bg-indigo-50"
-                      : "border-gray-300"
-                  }`}
-                  onClick={() => setRateId(rate.rateId)}
-                >
-                  <p className="text-lg font-medium text-gray-800">
-                    {rate.carrierFriendlyName} - {rate.serviceType}
-                  </p>
-                  <p className="text-indigo-600 font-bold text-xl">
-                    {rate.shippingAmount.amount} {rate.shippingAmount.currency}
-                  </p>
-                </div>
+          {/* Shipping Address Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {[
+                "name",
+                "phone",
+                "addressLine1",
+                "cityLocality",
+                "stateProvince",
+                "postalCode",
+                "countryCode",
+              ].map((field, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  placeholder={
+                    field === "countryCode"
+                      ? "Country Code (e.g., US)"
+                      : field
+                          .replace(/([A-Z])/g, " $1")
+                          .replace(/^./, (str) => str.toUpperCase())
+                  }
+                  value={getAddressField(shipeToAddress, field)}
+                  onChange={(e) =>
+                    setshipeToAddress({
+                      ...shipeToAddress,
+                      [field]: e.target.value,
+                    })
+                  }
+                  className="w-full p-3 border rounded-md shadow-sm focus:ring focus:ring-indigo-400"
+                  required
+                />
               ))}
             </div>
-          </div>
-        )}
 
-        {/* Create Label Button */}
-        {rateId && (
-          <button
-            onClick={handleCreateLabel}
-            disabled={loading}
-            className="mt-6 w-full py-3 bg-green-600 text-white font-semibold rounded-md shadow-lg hover:bg-green-700 disabled:bg-gray-400"
-          >
-            {loading ? "Creating Label..." : "Create Label"}
-          </button>
-        )}
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3 bg-[#23A6F0] text-white font-semibold rounded-md shadow-lg hover:bg-blue-400 disabled:bg-gray-400"
+            >
+              {loading ? "Calculating Rates..." : "Get Shipping Rates"}
+            </button>
+          </form>
 
-        {/* Download Shipping Label */}
-        {labelPdf && (
-          <div className="text-center mt-8">
-            <Link href={labelPdf} target="_blank">
-              <button className="px-8 py-3 bg-blue-500 text-white font-semibold rounded-md shadow-lg hover:bg-blue-600">
-                Download Shipping Label
-              </button>
-            </Link>
-          </div>
-        )}
+          {/* Display Available Shipping Rates */}
+          {rates.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold text-[#252B42] mb-4">
+                Available Shipping Rates
+              </h2>
+              <div className="space-y-4">
+                {rates.map((rate) => (
+                  <div
+                    key={rate.rateId}
+                    className={`p-4 border rounded-lg cursor-pointer transition-colors shadow-sm hover:shadow-md ${
+                      rateId === rate.rateId
+                        ? "border-indigo-600 bg-indigo-50"
+                        : "border-gray-300"
+                    }`}
+                    onClick={() => setRateId(rate.rateId)}
+                  >
+                    <p className="text-lg font-medium text-[#252B42]">
+                      {rate.carrierFriendlyName} - {rate.serviceType}
+                    </p>
+                    <p className="text-[#23A6F0] font-bold text-xl">
+                      {rate.shippingAmount.amount}{" "}
+                      {rate.shippingAmount.currency}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
-        {/* Tracking Details */}
-        {trackingObj && (
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Tracking Details
-            </h2>
-            <p className="text-gray-700">
-              Tracking Number: {trackingObj.trackingNumber}
-            </p>
-            <p className="text-gray-700">Label ID: {trackingObj.labelId}</p>
-            <p className="text-gray-700">
-              Carrier Code: {trackingObj.carrierCode}
-            </p>
-            <Link href={`/tracking/?labelId=${trackingObj.labelId}`}>
-              <button className="mt-4 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-lg hover:bg-indigo-700">
-                Track Shipment
-              </button>
-            </Link>
-          </div>
-        )}
+          {/* Create Label Button */}
+          {rateId && (
+            <button
+              onClick={handleCreateLabel}
+              disabled={loading}
+              className="mt-6 w-full py-3 bg-[#23856D] text-white font-semibold rounded-md shadow-lg hover:bg-[#4daf97] disabled:bg-gray-400"
+            >
+              {loading ? "Creating Label..." : "Create Label"}
+            </button>
+          )}
 
-        {/* Display Errors */}
-        {errors.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold text-red-600 mb-4">Errors</h2>
-            {errors.map((error, index) => (
-              <p key={index} className="text-red-500">
-                {error}
+          {/* Download Shipping Label */}
+          {labelPdf && (
+            <div className="text-center mt-8">
+              <Link href={labelPdf} target="_blank">
+                <button className="px-8 py-3 bg-[#23A6F0] text-white font-semibold rounded-md shadow-lg hover:bg-blue-400">
+                  Download Shipping Label
+                </button>
+              </Link>
+            </div>
+          )}
+
+          {/* Tracking Details */}
+          {trackingObj && (
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold text-[#252B42] mb-4">
+                Tracking Details
+              </h2>
+              <p className="text-gray-700">
+                Tracking Number: {trackingObj.trackingNumber}
               </p>
-            ))}
-          </div>
-        )}
+              <p className="text-gray-700">Label ID: {trackingObj.labelId}</p>
+              <p className="text-gray-700">
+                Carrier Code: {trackingObj.carrierCode}
+              </p>
+              <Link href={`/tracking/?labelId=${trackingObj.labelId}`}>
+                <button className="mt-4 px-6 py-3 bg-[#23A6F0] text-white font-semibold rounded-md shadow-lg hover:bg-blue-400">
+                  Track Shipment
+                </button>
+              </Link>
+            </div>
+          )}
+
+          {/* Display Errors */}
+          {errors.length > 0 && (
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold text-red-600 mb-4">
+                Errors
+              </h2>
+              {errors.map((error, index) => (
+                <p key={index} className="text-red-500">
+                  {error}
+                </p>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+      <Footer />
     </div>
   );
 };

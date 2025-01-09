@@ -1,12 +1,37 @@
+"use client"
 import Image from "next/image";
 import { FaClock, FaComment, FaChevronRight } from "react-icons/fa";
 import React from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const FeauresPosts = () => {
+  // Animation variants for blog cards
+  const blogCardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  // Animation variants for the "NEW" label
+  const newLabelVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.3 } },
+  };
+
+  // Animation variants for the "Learn More" button
+  const buttonVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.5 } },
+    hover: { scale: 1.05, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  };
+
   return (
     <div className="mt-32 wrapper">
+      {/* Heading Section */}
       <div className="text-center mb-20">
-        <h3 id="blog" className="text-[#23A6F0] text-[14px] font-bold">Practice Advice</h3>
+        <h3 id="blog" className="text-[#23A6F0] text-[14px] font-bold">
+          Practice Advice
+        </h3>
         <h2 className="text-[#252B42] text-[40px] font-bold">Featured Posts</h2>
         <p className="text-[#737373] text-[14px]">
           Problems trying to resolve the conflict between <br />
@@ -18,16 +43,26 @@ const FeauresPosts = () => {
       <div className="flex flex-wrap justify-center items-center gap-8">
         {/* Post Template for Reusability */}
         {["blog1.png", "blog2.png", "blog3.png"].map((blog, index) => (
-          <div
+          <motion.div
             key={index}
             className="max-w-xs sm:max-w-sm bg-white shadow-lg rounded-lg overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 flex flex-col items-center"
+            variants={blogCardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             {/* Image Section */}
             <div className="relative group">
               {/* NEW Label */}
-              <div className="absolute top-4 left-4 bg-[#E74040] text-white py-1 px-2 text-[14px] font-bold h-[24px] w-[58px] flex items-center justify-center">
+              <motion.div
+                className="absolute top-4 left-4 bg-[#E74040] text-white py-1 px-2 text-[14px] font-bold h-[24px] w-[58px] flex items-center justify-center"
+                variants={newLabelVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
                 NEW
-              </div>
+              </motion.div>
 
               <Image
                 src={`/${blog}`}
@@ -56,7 +91,7 @@ const FeauresPosts = () => {
               {/* Title */}
               <h3 className="text-[20px] text-[#252B42] mt-4">
                 Loudest à la Madison #{index + 1} <br />
-                <span className="text-[#252B42] text-[20px]">(L&spos;integral)</span>
+                <span className="text-[#252B42] text-[20px]">(L&apos;integral)</span>
               </h3>
 
               {/* Description */}
@@ -82,14 +117,24 @@ const FeauresPosts = () => {
               </div>
 
               {/* Learn More Button with > Icon */}
-              <div className="mt-4 flex items-center justify-start">
-                <button className="text-[#737373] text-sm font-bold py-2 px-4 rounded-md bg-transparent hover:bg-[#2DC071] hover:text-white transition-all duration-300 flex items-center space-x-2">
+              <motion.div
+                className="mt-4 flex items-center justify-start"
+                variants={buttonVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <motion.button
+                  className="text-[#737373] text-sm font-bold py-2 px-4 rounded-md bg-transparent hover:bg-[#2DC071] hover:text-white transition-all duration-300 flex items-center space-x-2"
+                  whileHover="hover"
+                  whileTap="tap"
+                >
                   <span>Learn More</span>
                   <FaChevronRight className="inline-block text-[#737373] group-hover:text-white" />
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
