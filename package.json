@@ -18,9 +18,11 @@
     "@sanity/vision": "^3.68.3",
     "@stripe/stripe-js": "^5.4.0",
     "add": "^2.0.6",
+    "axios": "^1.7.9",
     "carousel": "^0.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.7",
     "embla-carousel-react": "^8.5.1",
     "lucide-react": "^0.468.0",
     "next": "15.1.1",
@@ -31,11 +33,11 @@
     "react-toastify": "^11.0.2",
     "sanity": "^3.68.3",
     "shadcn": "^2.1.8",
+    "shipengine": "^1.0.7",
     "stripe": "^17.5.0",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7",
-    "use-shopping-cart": "^3.2.0"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -43,6 +45,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/react-modal": "^3.16.3",
     "@types/resolve": "^1.20.6",
     "eslint": "^9",
     "eslint-config-next": "15.1.1",

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiTrash2 } from "react-icons/fi";
-import { useCart } from "../../../components/cart-components/CartContext";
+import { useCart } from "@/components/cart-components/CartContext";
 import Header from "@/components/productList-components/header";
 import Footer from "@/components/team-components/footer";
 import { ClerkProvider } from "@clerk/nextjs";
