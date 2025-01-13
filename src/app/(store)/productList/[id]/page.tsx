@@ -88,6 +88,7 @@ const ProductPage = () => {
       quantity: 1,
       imageUrl: urlFor(product.image).url(),
       inStock: product.inStock,
+      stock: product.stock,
     };
 
     addToCart(item);
@@ -124,6 +125,7 @@ const ProductPage = () => {
       quantity: 1,
       imageUrl: urlFor(product.image).url(),
       inStock: product.inStock,
+      stock: product.stock,
     };
 
     console.log("Adding to Wishlist:", item);
@@ -197,7 +199,9 @@ const ProductPage = () => {
                   product.inStock ? "text-[#23A6F0]" : "text-[#E74040]"
                 }`}
               >
-                {product.inStock ? "In Stock" : "Out of Stock"}
+                {product.inStock
+                  ? `In Stock (${product.stock} available)`
+                  : "Out of Stock"}
               </span>
             </p>
           </div>

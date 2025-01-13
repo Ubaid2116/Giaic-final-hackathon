@@ -16,8 +16,8 @@ const ProductPage = () => {
       </ClerkProvider>
       <Hero />
       <Company />
-      <Footer />
       <Cards />
+      <Footer />
     </div>
   );
 };

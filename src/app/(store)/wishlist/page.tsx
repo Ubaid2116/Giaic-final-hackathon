@@ -22,7 +22,7 @@ export default function WishlistPage() {
       >
         <Header />
       </ClerkProvider>
-      <div className="p-6 bg-gradient-to-br from-gray-100 via-white to-gray-50 min-h-screen">
+      <div className="p-6 bg-gradient-to-br from-gray-100 via-white to-gray-50 min-h-screen wrapper">
         <h1 className="text-4xl font-extrabold mb-6 text-center text-[#252B42]">
           Your Wishlist
         </h1>

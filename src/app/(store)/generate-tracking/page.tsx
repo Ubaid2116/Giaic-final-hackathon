@@ -109,7 +109,7 @@ const ShippingRatesPage = () => {
       >
         <Header />
       </ClerkProvider>{" "}
-      <div className="min-h-screen bg-[#FAFAFA] py-12 px-6">
+      <div className="min-h-screen bg-[#FAFAFA] py-12 px-6 wrapper">
         <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-lg p-8">
           <h1 className="text-4xl font-bold text-[#252B42] text-center mb-8">
             Shipping Rates Calculator

@@ -104,6 +104,13 @@ export const productListType = defineType({
       validation: (Rule) => Rule.min(0).max(5).precision(1),
     }),
     defineField({
+      name: "stock",
+      title: "Stock Quantity",
+      type: "number",
+      description: "Number of items available in stock",
+      validation: (Rule) => Rule.required().min(0),
+    }),
+    defineField({
       name: "reviews",
       title: "Reviews Count",
       type: "number",
@@ -117,11 +124,12 @@ export const productListType = defineType({
       media: "image",
       subtitle: "price",
       inStock: "inStock",
+      stock: "stock",
     },
-    prepare({ title, subtitle, media, inStock }) {
+    prepare({ title, subtitle, media, inStock, stock }) {
       return {
         title,
-        subtitle: `$${subtitle} | ${inStock ? "In Stock" : "Out of Stock"}`,
+        subtitle: `$${subtitle} | ${inStock ? `In Stock (${stock})` : "Out of Stock"}`,
         media,
       };
     },

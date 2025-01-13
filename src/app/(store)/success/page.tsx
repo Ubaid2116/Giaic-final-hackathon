@@ -3,7 +3,7 @@ import { CheckCircle } from "lucide-react";
 
 export default function PaymentSuccessPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-400 to-blue-500 wrapper">
       <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
         <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Payment Successful!

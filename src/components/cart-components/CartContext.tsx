@@ -16,6 +16,7 @@ export interface CartItem {
   quantity: number;
   imageUrl: string;
   inStock: boolean;
+  stock: number;
 }
 
 type CartContextType = {

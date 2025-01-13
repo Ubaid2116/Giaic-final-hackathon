@@ -4,7 +4,7 @@ import ProductCard, { Product } from "../home-components/product-card";
 import { useState, useEffect } from "react";
 import { client } from "@/sanity/lib/client";
 import Loader from "../home-components/loader";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 const Cards: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -24,7 +24,7 @@ const Cards: React.FC = () => {
         stock,
         rating,
         reviews,
-        inStock
+        inStock,
       }`;
 
       const data: Product[] = await client.fetch(query);

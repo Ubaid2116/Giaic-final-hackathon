@@ -23,25 +23,39 @@ const Cart = () => {
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
-
+  
     if (!stripe) {
       console.error("Stripe.js has not loaded properly.");
       return;
     }
-
+  
     try {
+      for (const item of cartItems) {
+        const stockUpdateResponse = await fetch("/api/updateStock", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId: item.id, quantity: item.quantity }),
+        });
+  
+        if (!stockUpdateResponse.ok) {
+          const { message } = await stockUpdateResponse.json();
+          alert(`Failed to update stock for ${item.name}: ${message}`);
+          return;
+        }
+      }
+  
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cartItems }),
       });
-
+  
       if (!response.ok) {
         throw new Error("Failed to create checkout session");
       }
-
+  
       const { sessionId } = await response.json();
-
+  
       if (sessionId) {
         const { error } = await stripe.redirectToCheckout({ sessionId });
         if (error) {
@@ -54,7 +68,6 @@ const Cart = () => {
       console.error("Checkout error:", error);
     }
   };
-
   return (
     <div>
       <ClerkProvider
@@ -176,3 +189,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

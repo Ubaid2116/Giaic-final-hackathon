@@ -17,16 +17,15 @@ import {
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import { useCart } from "../cart-components/CartContext";
-import { motion, AnimatePresence } from "framer-motion"; // Import Framer Motion
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems, wishlist } = useCart(); // Add wishlist from useCart
+  const { cartItems, wishlist } = useCart(); 
 
   // Calculate total quantity of items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
-  const totalWishlistItems = wishlist.length; // Assuming each item in wishlist has a quantity of 1
+  const totalWishlistItems = wishlist.length;
 
   // Animation variants for the mobile menu
   const mobileMenuVariants = {
