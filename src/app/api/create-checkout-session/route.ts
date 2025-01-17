@@ -28,7 +28,7 @@ export async function POST(request: Request) {
         quantity: item.quantity,
       })),
       mode: "payment",
-      success_url: "https://final-hackathon-ubaid.vercel.app/success",
+      success_url: "http://localhost:3000/success",
       cancel_url: "https://final-hackathon-ubaid.vercel.app/cart",
     });
 

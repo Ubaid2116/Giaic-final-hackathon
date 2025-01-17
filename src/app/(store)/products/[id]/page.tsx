@@ -95,7 +95,7 @@ export default function ProductDetail() {
     }
 
     // Check if the product is out of stock
-    if (!product.inStock) {
+    if (product.stock <= 0) {
       toast.error(
         "This product is out of stock and cannot be added to the cart.",
         {
@@ -113,7 +113,7 @@ export default function ProductDetail() {
       price: product.discountPrice || product.price,
       quantity: 1,
       imageUrl: urlFor(product.image).url(),
-      inStock: product.inStock,
+      inStock: product.stock > 0, // Update inStock based on stock
       stock: product.stock,
     };
 
@@ -132,7 +132,7 @@ export default function ProductDetail() {
     }
 
     // Check if the product is in stock
-    if (product.inStock) {
+    if (product.stock > 0) {
       toast.error(
         "This product is in stock and cannot be added to the wishlist.",
         {
@@ -150,7 +150,7 @@ export default function ProductDetail() {
       price: product.discountPrice || product.price,
       quantity: 1,
       imageUrl: urlFor(product.image).url(),
-      inStock: product.inStock,
+      inStock: product.stock > 0,
       stock: product.stock,
     };
 
@@ -253,10 +253,10 @@ export default function ProductDetail() {
               Availability :{" "}
               <span
                 className={`font-bold text-[14px] ${
-                  product.inStock ? "text-[#23A6F0]" : "text-[#E74040]"
+                  product.stock > 0 ? "text-[#23A6F0]" : "text-[#E74040]"
                 }`}
               >
-                {product.inStock
+                {product.stock > 0
                   ? `In Stock (${product.stock} available)`
                   : "Out of Stock"}
               </span>

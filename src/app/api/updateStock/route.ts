@@ -20,13 +20,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // Try fetching the product from the first query (`product` type)
     let product = await client.fetch(
       `*[_type == "product" && _id == $productId][0]`,
       { productId }
     );
 
-    // If the first query fails, try the second query (`productList` type)
     if (!product) {
       product = await client.fetch(
         `*[_type == "productList" && _id == $productId][0]`,

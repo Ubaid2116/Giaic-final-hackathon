@@ -5,7 +5,7 @@ import { client } from "@/sanity/lib/client";
 import { useEffect, useState } from "react";
 import Loader from "./loader";
 import ProductCard, { Product } from "./product-card";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 const FeatureProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);

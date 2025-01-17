@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import React from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 const EditorsPics = () => {
   // Animation variants for images

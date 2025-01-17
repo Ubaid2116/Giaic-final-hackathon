@@ -20,13 +20,13 @@ import { useCart } from "@/components/cart-components/CartContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems, wishlist } = useCart(); // Add wishlist from useCart
+  const { cartItems, wishlist } = useCart(); 
 
   // Calculate total quantity of items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   // Calculate total quantity of items in wishlist
-  const totalWishlistItems = wishlist.length; // Assuming each item in wishlist has a quantity of 1
+  const totalWishlistItems = wishlist.length;
 
   return (
     <div className="overflow-x-hidden">

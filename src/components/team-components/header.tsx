@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md py-4">
+    <header className="bg-white shadow-md py-4 sticky">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* Logo */}
         <Link href={"/"}>

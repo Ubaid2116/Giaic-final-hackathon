@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import React from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 const Hero = () => {
   // Animation variants for text content

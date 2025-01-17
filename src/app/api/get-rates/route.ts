@@ -1,5 +1,5 @@
 import { shipengine } from "@/lib/shipengine";
-import { Address, Package } from "../../../../types";
+import { Address, Package } from "@/app/types/types";
 import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest) {

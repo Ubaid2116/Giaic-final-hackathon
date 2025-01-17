@@ -2,22 +2,19 @@
 import Image from "next/image";
 import React from "react";
 import { FiChevronRight } from "react-icons/fi";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 const Hero = () => {
-  // Animation variants for product images
   const productImageVariants = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: "easeOut" } },
   };
 
-  // Animation variants for hover text overlay
   const hoverTextVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.3 } },
   };
 
-  // Animation variants for buttons and icons
   const buttonVariants = {
     hover: { scale: 1.05, transition: { duration: 0.2 } },
     tap: { scale: 0.95 },

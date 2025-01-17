@@ -68,12 +68,6 @@ export const productTypes = defineType({
         }),
     }),
     defineField({
-      name: "categories",
-      title: "Categories",
-      type: "array",
-      of: [{ type: "reference", to: { type: "category" } }],
-    }),
-    defineField({
       name: "inStock",
       title: "In Stock",
       type: "boolean",

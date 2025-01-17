@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useCallback } from "react";
 import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
-import { TrackingData } from "../../../../types";
+import { TrackingData } from "@/app/types/types";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/productList-components/header";
 import Footer from "@/components/team-components/footer";

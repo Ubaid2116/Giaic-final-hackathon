@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { Address, Rate, trackingObjType } from "../../../../types";
+import { Address, Rate, trackingObjType } from "@/app/types/types";
 import { cartProductsWhichCanBeShipped } from "../../../../data";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/productList-components/header";

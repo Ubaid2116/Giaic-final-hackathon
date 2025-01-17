@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { FaClock, FaComment, FaChevronRight } from "react-icons/fa";
 import React from "react";
-import { motion } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 const FeauresPosts = () => {
   // Animation variants for blog cards
