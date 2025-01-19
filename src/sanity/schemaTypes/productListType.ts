@@ -98,9 +98,9 @@ export const productListType = defineType({
     }),
     defineField({
       name: "rating",
-      title: "Rating",
+      title: "Average Rating",
       type: "number",
-      description: "Rating from 0 to 5",
+      description: "Average rating from 0 to 5",
       validation: (Rule) => Rule.min(0).max(5).precision(1),
     }),
     defineField({
@@ -112,10 +112,40 @@ export const productListType = defineType({
     }),
     defineField({
       name: "reviews",
-      title: "Reviews Count",
-      type: "number",
-      description: "Number of reviews for the product",
-      validation: (Rule) => Rule.required().min(0),
+      title: "Reviews",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "name",
+              title: "Reviewer Name",
+              type: "string",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "rating",
+              title: "Rating",
+              type: "number",
+              validation: (Rule) => Rule.required().min(1).max(5),
+            },
+            {
+              name: "comment",
+              title: "Comment",
+              type: "text",
+              validation: (Rule) => Rule.required(),
+            },
+            {
+              name: "date",
+              title: "Date",
+              type: "datetime",
+              initialValue: new Date().toISOString(),
+              validation: (Rule) => Rule.required(),
+            },
+          ],
+        },
+      ],
     }),
   ],
   preview: {

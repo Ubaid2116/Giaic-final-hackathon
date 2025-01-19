@@ -1,11 +1,18 @@
 export interface Product {
-  id: string;
-  image: string;
+  _id: string;
+  _type: string;
   name: string;
+  slug: { current: string };
+  inStock: boolean;
+  image: string;
+  description: string;
+  price: number;
+  discountPrice?: number;
+  colors?: string[];
   department: string;
-  originalPrice: string;
-  discountedPrice: string;
-  colors: string[];
+  rating?: number;
+  stock?: number;
+  reviews: Review[]; 
 }
 
 export interface Product1 {
@@ -15,6 +22,13 @@ export interface Product1 {
   price: number;
   discountPrice: number;
   imageUrl: string;
+}
+
+export interface Review {
+  name: string;
+  rating: number;
+  comment: string;
+  date: string;
 }
 
 export type Address = {

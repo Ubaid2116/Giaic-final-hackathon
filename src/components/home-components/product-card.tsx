@@ -2,21 +2,26 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-// Define the Product interface
 export interface Product {
   _id: string;
+  _type: string;
   name: string;
-  image: SanityImageSource;
-  department: string;
-  price: number;
-  discountPrice: number;
-  colors: string[];
   slug: { current: string };
-  reviews: number;
-  stock: number;
-  rating: number;
-  description: string;
   inStock: boolean;
+  image: SanityImageSource; // Use the appropriate type for Sanity image
+  description: string;
+  price: number;
+  discountPrice?: number;
+  colors: string[];
+  department: string;
+  rating: number;
+  stock: number;
+  reviews: {
+    name: string;
+    rating: number;
+    comment: string;
+    date: string;
+  }[];
 }
 
 interface ProductCardProps {
