@@ -316,7 +316,7 @@ const ProductPage = () => {
 
           {/* Action Buttons with Icons */}
           <div className="flex justify-center sm:justify-start gap-4 mt-14">
-            <button className="px-8 py-3 bg-[#23A6F0] hover:bg-[#1E90FF] text-white rounded-lg text-[16px] font-bold transition-all shadow-lg hover:shadow-xl">
+            <button className="px-5 py-1 md:px-8 md:py-3 bg-[#23A6F0] hover:bg-[#1E90FF] text-white rounded-lg text-[16px] font-bold transition-all shadow-lg hover:shadow-xl">
               Select Options
             </button>
             <div className="relative group">

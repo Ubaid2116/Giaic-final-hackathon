@@ -310,7 +310,7 @@ export default function ProductDetail() {
         </div>
 
         {/* Product Details Section */}
-        <div className="flex-1 ml-0 sm:ml-10 text-center sm:text-left">
+        <div className="flex-1 ml-0 sm:ml-10 text-center sm:text-left mt-10">
           <h2 className="text-[#252B42] text-3xl font-bold mt-12 md:mt-0">
             {product.name}
           </h2>
@@ -380,7 +380,7 @@ export default function ProductDetail() {
 
           {/* Action Buttons with Icons */}
           <div className="flex justify-center sm:justify-start gap-4 mt-14">
-            <button className="px-8 py-3 bg-[#23A6F0] hover:bg-[#1E90FF] text-white rounded-lg text-[16px] font-bold transition-all shadow-lg hover:shadow-xl">
+            <button className="px-5 py-1 md:px-8 md:py-3 bg-[#23A6F0] hover:bg-[#1E90FF] text-white rounded-lg text-[16px] font-bold transition-all shadow-lg hover:shadow-xl">
               Select Options
             </button>
             <div className="relative group">
