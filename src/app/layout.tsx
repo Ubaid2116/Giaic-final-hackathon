@@ -20,11 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <CartProvider>
-    <html lang="en" className={montserrat.className}>
-      <body>
-        {children}
-      </body>
-    </html>
+      <html lang="en" className={montserrat.className}>
+        <body>
+          {children}
+          <script
+            src="//code.tidio.co/x0zp3qbejlod3fyqblv5vphvgsr2ywwh.js"
+            async
+          ></script>
+        </body>
+      </html>
     </CartProvider>
-  );  
+  );
 }
