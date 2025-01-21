@@ -19,9 +19,21 @@ import Image from "next/image";
 import { useCart } from "../cart-components/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface Product {
+  _id: string;
+  name: string;
+  image: string;
+  price: number;
+  slug: {
+    current: string;
+  };
+}
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { cartItems, wishlist } = useCart(); 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<Product[]>([]);
+  const { cartItems, wishlist } = useCart();
 
   // Calculate total quantity of items in cart
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -31,6 +43,17 @@ const Header = () => {
   const mobileMenuVariants = {
     open: { opacity: 1, y: 0, transition: { duration: 0.3 } },
     closed: { opacity: 0, y: "-100%", transition: { duration: 0.3 } },
+  };
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    // Redirect to the search results page
+    window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
   };
 
   return (
@@ -105,11 +128,51 @@ const Header = () => {
           </Link>
 
           {/* Action Icons (Mobile and Desktop) */}
-          <div className="flex items-center gap-4 md:hidden">
-            <FiSearch
-              size={25}
-              className="text-2xl text-[#737373] cursor-pointer"
-            />
+          <div className="flex items-center gap-2 md:hidden">
+            {/* Search Bar for Mobile */}
+            <form onSubmit={handleSearch} className="relative">
+              <input
+                type="text"
+                placeholder="Search pro..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-32 px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#23A6F0]"
+              />
+              <button type="submit" className="absolute right-2 top-1.5">
+                <FiSearch className="text-lg cursor-pointer text-gray-600" />
+              </button>
+            </form>
+
+            {/* Display Search Results for Mobile */}
+            {searchResults.length > 0 && (
+              <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg mt-2 rounded-md z-50">
+                <ul className="py-2">
+                  {searchResults.map((product) => (
+                    <li
+                      key={product._id}
+                      className="px-4 py-2 hover:bg-gray-100"
+                    >
+                      <Link
+                        href={`/products/${product.slug.current}`}
+                        className="flex items-center gap-4"
+                      >
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-10 h-10 object-cover rounded"
+                        />
+                        <div>
+                          <p className="font-medium">{product.name}</p>
+                          <p className="text-sm text-gray-600">
+                            ${product.price}
+                          </p>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <Link href={"/cart"}>
               <motion.div
@@ -231,7 +294,52 @@ const Header = () => {
             <SignedIn>
               <UserButton showName />
             </SignedIn>
-            <FiSearch className="text-lg cursor-pointer" />
+
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="relative">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#23A6F0]"
+              />
+              <button type="submit" className="absolute right-2 top-2">
+                <FiSearch className="text-lg cursor-pointer mt-1" />
+              </button>
+            </form>
+
+            {/* Display Search Results */}
+            {searchResults.length > 0 && (
+              <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-lg mt-2 rounded-md z-50">
+                <ul className="py-2">
+                  {searchResults.map((product) => (
+                    <li
+                      key={product._id}
+                      className="px-4 py-2 hover:bg-gray-100"
+                    >
+                      <Link
+                        href={`/products/${product.slug.current}`}
+                        className="flex items-center gap-4"
+                      >
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-10 h-10 object-cover rounded"
+                        />
+                        <div>
+                          <p className="font-medium">{product.name}</p>
+                          <p className="text-sm text-gray-600">
+                            ${product.price}
+                          </p>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <Link href={"/cart"}>
               <motion.div
                 className="relative"
@@ -260,7 +368,7 @@ const Header = () => {
                   </span>
                 )}
               </div>
-            </Link>{" "}
+            </Link>
           </div>
         </div>
 
@@ -386,7 +494,7 @@ const Header = () => {
                         </span>
                       )}
                     </div>
-                  </Link>{" "}
+                  </Link>
                 </div>
               </div>
             </motion.div>
