@@ -87,7 +87,7 @@ const SearchResultsPage = () => {
             transition={{ duration: 0.5 }}
             className="text-3xl font-bold mb-6 text-center flex items-center justify-center gap-2"
           >
-            <FaSearch className="text-gray-700" /> Search Results for "{searchQuery}"
+            <FaSearch className="text-gray-700" /> Search Results for &quot;{searchQuery}&quot;
           </motion.h1>
           {isLoading ? (
             <motion.div
