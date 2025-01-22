@@ -6,12 +6,8 @@ import { useCart } from "@/components/cart-components/CartContext";
 import Header from "@/components/productList-components/header";
 import Footer from "@/components/team-components/footer";
 import { ClerkProvider } from "@clerk/nextjs";
-import { loadStripe } from "@stripe/stripe-js";
 import Image from "next/image";
-
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+import Link from "next/link";
 
 const Cart = () => {
   const { cartItems, addToCart, decreaseQuantity, removeFromCart } = useCart();
@@ -21,53 +17,6 @@ const Cart = () => {
     0
   );
 
-  const handleCheckout = async () => {
-    const stripe = await stripePromise;
-  
-    if (!stripe) {
-      console.error("Stripe.js has not loaded properly.");
-      return;
-    }
-  
-    try {
-      for (const item of cartItems) {
-        const stockUpdateResponse = await fetch("/api/updateStock", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ productId: item.id, quantity: item.quantity }),
-        });
-  
-        if (!stockUpdateResponse.ok) {
-          const { message } = await stockUpdateResponse.json();
-          alert(`Failed to update stock for ${item.name}: ${message}`);
-          return;
-        }
-      }
-  
-      const response = await fetch("/api/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartItems }),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to create checkout session");
-      }
-  
-      const { sessionId } = await response.json();
-  
-      if (sessionId) {
-        const { error } = await stripe.redirectToCheckout({ sessionId });
-        if (error) {
-          console.error("Error redirecting to checkout:", error);
-        }
-      } else {
-        console.error("No session ID returned.");
-      }
-    } catch (error) {
-      console.error("Checkout error:", error);
-    }
-  };
   return (
     <div>
       <ClerkProvider
@@ -172,12 +121,12 @@ const Cart = () => {
                     ${totalPrice.toFixed(2)}
                   </span>
                 </div>
-                <button
-                  onClick={handleCheckout}
-                  className="w-full bg-[#23A6F0] hover:bg-blue-400 text-white font-bold py-3 px-6 rounded-lg transition-all ease-in-out"
+                <Link
+                  href="/checkout"
+                  className="w-full bg-[#23A6F0] hover:bg-blue-400 text-white font-bold py-3 px-6 rounded-lg transition-all ease-in-out block text-center"
                 >
                   Proceed to Checkout
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -189,4 +138,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
