@@ -1,9 +1,26 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-export async function POST(request: Request) {
-  const { email, name, cartItems, totalPrice } = await request.json();
+// Define types
+type CartItem = {
+  name: string;
+  price: number;
+  quantity: number;
+};
 
+type EmailRequestBody = {
+  email: string;
+  name: string;
+  cartItems: CartItem[];
+  totalPrice: number;
+};
+
+export async function POST(request: Request) {
+  // Parse the request body with the defined type
+  const { email, name, cartItems, totalPrice }: EmailRequestBody =
+    await request.json();
+
+  // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -12,13 +29,15 @@ export async function POST(request: Request) {
     },
   });
 
+  // Format the cart items for the email
   const itemsList = cartItems
     .map(
-      (item: any) =>
+      (item) =>
         `<li>${item.name} - $${item.price.toFixed(2)} x ${item.quantity}</li>`
     )
     .join("");
 
+  // Email content
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
@@ -49,6 +68,7 @@ export async function POST(request: Request) {
   };
 
   try {
+    // Send the email
     await transporter.sendMail(mailOptions);
     return NextResponse.json({ success: true });
   } catch (error) {
