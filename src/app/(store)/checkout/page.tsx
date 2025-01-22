@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react"; // Import useState
 import { useCart } from "@/components/cart-components/CartContext";
 import Image from "next/image";
 import { loadStripe } from "@stripe/stripe-js";
@@ -26,6 +26,7 @@ const stripePromise = loadStripe(
 
 export default function Checkout() {
   const { cartItems } = useCart();
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -48,7 +49,10 @@ export default function Checkout() {
       return;
     }
 
+    setIsLoading(true); // Start loading
+
     try {
+      // Update stock for each item in the cart
       for (const item of cartItems) {
         const stockUpdateResponse = await fetch("/api/updateStock", {
           method: "POST",
@@ -59,10 +63,12 @@ export default function Checkout() {
         if (!stockUpdateResponse.ok) {
           const { message } = await stockUpdateResponse.json();
           alert(`Failed to update stock for ${item.name}: ${message}`);
+          setIsLoading(false); // Stop loading on error
           return;
         }
       }
 
+      // Create a Stripe Checkout session
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -76,6 +82,7 @@ export default function Checkout() {
       const { sessionId } = await response.json();
 
       if (sessionId) {
+        // Send email to the user
         const emailResponse = await fetch("/api/send-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -91,15 +98,19 @@ export default function Checkout() {
           throw new Error("Failed to send email");
         }
 
+        // Redirect to Stripe Checkout
         const { error } = await stripe.redirectToCheckout({ sessionId });
         if (error) {
           console.error("Error redirecting to checkout:", error);
+          setIsLoading(false); // Stop loading on error
         }
       } else {
         console.error("No session ID returned.");
+        setIsLoading(false); // Stop loading on error
       }
     } catch (error) {
       console.error("Checkout error:", error);
+      setIsLoading(false); // Stop loading on error
     }
   };
 
@@ -242,9 +253,10 @@ export default function Checkout() {
                   </div>
                   <button
                     type="submit"
-                    className="w-full mt-6 bg-gradient-to-r from-[#3B82F6] to-[#1D4ED8] hover:from-[#1D4ED8] hover:to-[#3B82F6] text-white font-bold py-3 px-6 rounded-lg transition-all ease-in-out transform hover:scale-105"
+                    disabled={isLoading} // Disable button when loading
+                    className="w-full mt-6 bg-gradient-to-r from-[#3B82F6] to-[#1D4ED8] hover:from-[#1D4ED8] hover:to-[#3B82F6] text-white font-bold py-3 px-6 rounded-lg transition-all ease-in-out transform hover:scale-105 disabled:opacity-75 disabled:cursor-not-allowed"
                   >
-                    Place Order
+                    {isLoading ? "Loading..." : "Place Order"} {/* Show loading text */}
                   </button>
                 </form>
               </div>
