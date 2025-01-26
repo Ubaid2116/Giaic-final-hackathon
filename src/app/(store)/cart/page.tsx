@@ -48,7 +48,6 @@ const Cart = () => {
                       className="border-b border-gray-200 hover:bg-gray-100"
                     >
                       <td className="py-4 px-4 flex items-center space-x-3">
-                        {/* Product Image */}
                         <div className="w-16 h-16 relative">
                           <Image
                             src={item.imageUrl}
